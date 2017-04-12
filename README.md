@@ -23,7 +23,7 @@
   ```
 
 - Create a **partsByPartNumber** view that sorts the parts by part number and allows the ability to search for a specific key, keys, or range of keys using pouchdb api's `db.query()`
-- Edit **dal.js**. npm install and require pouchdb-http and the pouchdb-mapreduce plug in.
+- Create and edit **dal.js**. npm install and require pouchdb-http and the pouchdb-mapreduce plug in.
 - connect to couch via the pouchdb-http api: 
 
   ```
@@ -34,7 +34,7 @@
   const db = new PouchDB(couch_base_uri + couch_dbname)
   ```
   
- - Within the DAL, create function to get a single item.  The function will take the pk value for the itemId and a callback function.  We'll call the callback function after we attempt to db.get() a specific document from the database.   The callback function is used to asyncronously notify the caller that we are done.  
+- Create the DAL that we will leverage within our API code, in the future. Within the DAL, create function to get a single item.  The function will take the pk value for the itemId and a callback function.  We'll call the callback function after we attempt to db.get() a specific document from the database.   The callback function is used to asyncronously notify the caller that we are done.  
   
   ```
   function getItem(itemId, cb) {
@@ -44,4 +44,53 @@
     })
   }
   ```
+
+- Start creating the ExpressJS API.  Create and edit **app.js**. npm install dependency and require express, ramda, body-parser, node-http-error, cors.  The body-parser is expressjs middleware that parses the body content of an HTTP POST or PUT.  cors (cross origin resource sharing) middleware enables secure cross-domain data transfers.
+
+  ```
+  const express = require('express')
+  const app = express()
+  const { split } = require('ramda')
+  const bodyParser = require('body-parser')
+  const HTTPError = require('node-http-error')
+  const port = process.env.PORT || 8080
+  const cors = require('cors')
+
+  app.use(cors({
+      credentials: true
+  }))
+  app.use(bodyParser.json())
+  ```
   
+- At the bottom of our app.js file, create our home URL or "route", error handler middleware, and begin listening to requests from client applications (React, POSTman, etc.)
+
+  ```  
+  app.get('/', function(req, res) {
+      res.send('Welcome to the API!')
+  })
+
+  app.use(function(err, req, res, next) {
+      console.log(req.method, " ", req.path, "error:  ", err)
+      res.status(err.status || 500)
+      res.send(err)
+  })
+
+  app.listen(port, function() {
+      console.log("API is up and running on port ", port)
+  })
+  ```
+  
+- Near the top of our app.js file, create a URL route to handle a request to GET a single item:
+
+  ```
+  app.get('/item/:id', function(req, res, next) {
+    getItem(req.params.id, function(err, dalResponse) {
+        if (err) return next(new HTTPError(err.status, err.message, err))
+        res.status(200).send(dalResponse)
+    })
+  })
+  ```
+
+- Test our home and item/:id urls using POSTman
+- Create a route to retrieve all the items.  Within the dal, use db.allDocs(). 
+- Use db.query() to call a view instead of db.allDocs(). 
