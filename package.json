@@ -4,6 +4,7 @@
   "description": "## TODOS",
   "main": "index.js",
   "scripts": {
+    "start": "PORT=4000 node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/tripott/api-refresh-winter-2017/issues"
   },
-  "homepage": "https://github.com/tripott/api-refresh-winter-2017#readme"
+  "homepage": "https://github.com/tripott/api-refresh-winter-2017#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "node-http-error": "^1.1.0",
+    "pouchdb-http": "^6.0.2",
+    "pouchdb-mapreduce": "^6.1.2",
+    "ramda": "^0.23.0"
+  }
 }
