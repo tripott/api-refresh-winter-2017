@@ -92,5 +92,17 @@
   ```
 
 - Test our home and item/:id urls using POSTman
-- Create a route to retrieve all the items.  Within the dal, use db.allDocs(). 
+- Create a route to retrieve all the items.  Within the dal, use db.allDocs(). prefix search  You can do prefix search in allDocs() – i.e. “give me all the documents whose _ids start with 'foo'” – by using the special high Unicode character '\uffff':
+  
+  ```
+  db.allDocs({
+    include_docs: true,
+    attachments: true,
+    startkey: 'foo',
+    endkey: 'foo\uffff' 
+    }, function(err, response) {
+    if (err) { return console.log(err); }
+      // handle result
+    });
+  ```
 - Use db.query() to call a view instead of db.allDocs(). 
