@@ -1,0 +1,20 @@
+{
+  "name": "api-refresh-winter-2017",
+  "version": "1.0.0",
+  "description": "## TODOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tripott/api-refresh-winter-2017.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tripott/api-refresh-winter-2017/issues"
+  },
+  "homepage": "https://github.com/tripott/api-refresh-winter-2017#readme"
+}
