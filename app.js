@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
 const cors = require('cors')
 const port = process.env.PORT || 8080
-const {getItem} = require('./dal')
+const {getItem, getItemsByPartNumber, getItemsByDate} = require('./dal')
+const {split, map} = require('ramda')
 
 app.use(cors({credentials: true}))
 app.use(bodyParser.json())
@@ -15,6 +16,30 @@ app.use(bodyParser.json())
      res.status(200).send(doc)
    })
  })
+
+app.get('/items', function (req, res, next) {
+  getItemsByPartNumber(function(err, items) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+
+
+    res.status(200).send(items)
+  })
+})
+
+app.get('/itemsbydate', function (req, res, next) {
+
+  const startkey = map(nbr => Number(nbr), split(',', req.query.startkey))
+  const endkey = map(nbr => Number(nbr), split(',', req.query.endkey))
+
+  //console.log("start and end", startkey, endkey)
+
+  getItemsByDate(startkey, endkey, function(err, items) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+
+
+    res.status(200).send(items)
+  })
+})
 
 
 app.get('/', function (req, res) {

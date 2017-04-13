@@ -112,7 +112,7 @@ const design_itemByPartNumber = {
     _id: "_design/itemByPartNumber",
     language: "javascript",
     views: {
-        partsByPartNumber: {
+        itemByPartNumber: {
             map: function(doc) {
                 if (doc.type === "item") {
                    emit(doc.partNumber, 0);
@@ -134,7 +134,7 @@ const design_itemCostName = {
     _id: "_design/itemCostName",
     language: "javascript",
     views: {
-        partsByPartNumber: {
+        itemCostName: {
             map: function(doc) {
               if (doc.type === "item") {
                 emit([doc.cost, doc.name], 0);
